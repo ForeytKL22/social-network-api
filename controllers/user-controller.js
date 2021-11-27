@@ -75,9 +75,8 @@ const userController = {
 // POST to add a new friend to user's friend list
     addFriend({ params }, res) {
         User.findOneAndUpdate(
-            // not sure if these are right?
             { _id: params.id},
-            { $push: { friends: params.friendId } },
+            { $addToSet: { friends: params.friendId } },
             { new: true }
         )
         .then(dbUserData => {
@@ -92,13 +91,12 @@ const userController = {
 
 // DELETE (remove) a friend from user's friend list
     removeFriend({ params }, res) {
-        User.findOneAndDelete({ _id: params.id })
+        User.findOneAndUpdate({ _id: params.id })
         .then(deletedFriend => {
             if (!deletedFriend) {
                 return res.status(404).json({ message: 'No friend found with this id' });
             }
             return User.findOneAndUpdate(
-                // not sure about these??
                 { _id: params.id },
                 { $pull: { friends: params.friendId } },
                 { new: true },
