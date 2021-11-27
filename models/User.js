@@ -1,7 +1,7 @@
 const { Schema, model } = requir('mongoose');
 
 const UserSchema = new Schema({
-    userName: {
+    username: {
         type: String,
         unique: true,
         required: 'This is not a valid username',
