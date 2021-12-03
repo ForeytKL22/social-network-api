@@ -68,7 +68,7 @@ const thoughtController = {
 
 // PUT to update a thought by its _id
     updateThought({ params, body }, res) {
-        Thoughts.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+        Thoughts.findOneAndUpdate({ _id: params.thoughtId }, body, { new: true, runValidators: true })
         .then(dbThoughtData => {
             if (!dbThoughtData) {
                 res.status(404).json({ message: 'No thought found with this id' });
@@ -89,7 +89,7 @@ const thoughtController = {
                 }
                 return User.findOneAndUpdate(
                     { _id: params.id },
-                    { $pull: { thoughts: params.thoughtId }},
+                    { $pull: { thoughts: { thoughtId: params.thoughtId } } },
                     { new: true },
                 );
             })
